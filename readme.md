@@ -1,6 +1,6 @@
 ## Tópicos em Go
 
-## 02 Estruturas, métodos e interfaces
+## Estruturas, métodos e interfaces
 
 Exemplo de estrutura e método
 
@@ -65,3 +65,120 @@ func total(array []float64) float64 {
 ```
 
 #### Closure
+ Uma funçao que recebe uma funcção
+ ```go
+ package main
+
+
+func somaNumero (endNum *int, val int) {
+	(*endNum) += val
+}
+
+func main() {
+
+	num := 0;
+
+	numero := func() int {
+		num ++
+		return num;
+	}
+
+	println(numero())
+	println(num)
+}
+ ```
+
+### Defer Panic recover
+Defer: escalona um método para que ele seja executado ao fim da função.
+ ```go
+ package main
+
+import "fmt"
+
+func dia1() {
+	fmt.Println("Ola mundo 1")
+}
+func dia2() {
+	fmt.Println("Ola mundo 2")
+}
+
+func main() {
+
+	defer dia2()
+
+	dia1()
+
+}
+```
+
+Panic: Para a execução com um erro provido pelo programador
+Recover: interrompe o Panic
+
+```go
+
+func main() {
+	defer func() {
+		x := recover()
+		fmt.Println(x)
+	}()
+	panic("Panico no trem")
+}
+```
+
+### Ponteiros e operadores 
+Ponteiro é uma variavel que armazena um endereço de memória
+
+&val -> retorna o endereço dessa varialvel
+\* -> acessa a variavel naquele endereço 
+```go
+a := 1 // 1
+pont := &a // 0xc000061f60
+(*pont) // 1
+```
+```go
+func somaNumero (endNum *int, val int) {
+	(*endNum) += val
+}
+```
+## Pacotes
+Reutilizar e não reescrever código
+Exemplos de pacotes:
+- String
+- IO
+- File/ Filepath
+
+### Strings
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func main() {
+	fmt.Println(strings.Contains("Computador", "com"))
+}
+```
+
+### OS 
+
+```go 
+package main
+
+import (
+	"log"
+	"os"
+)
+
+func main() {
+	f, err := os.OpenFile("file.txt", os.O_CREATE|os.O_CREATE, os.ModeAppend)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	f.Write([]byte("Ola mundo da alsçdkjfaçlsdjf"))
+
+}
+```

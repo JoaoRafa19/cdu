@@ -19,7 +19,7 @@ func headers (w http.ResponseWriter, req * http.Request) {
 	}
 }
 
-func main() {
+func main1() {
 
 	http.HandleFunc("/", hello)
 	http.HandleFunc("/headers", headers)

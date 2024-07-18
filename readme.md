@@ -334,3 +334,134 @@ func main() {
 	}
 }
 ```
+
+## Consumindo api
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+)
+
+type Pokemons struct {
+
+}
+
+func main() {
+	response, err := http.Get("http://pokeapi.co/api/v2/pokedex/kanto")
+	if err != nil {
+		fmt.Print(err.Error())
+		panic(err)
+	}
+
+	
+	
+	 responseData, err := io.ReadAll(response.Body)
+	 if err != nil {
+		fmt.Print(err.Error())
+		panic(err)
+	}
+
+
+
+
+
+
+	fmt.Print(string(responseData))
+
+
+	var resp Response
+
+	json.Unmarshal(responseData, &resp)
+
+	for _, poke := range resp.Pokemons {
+		fmt.Println(poke)
+	}
+}
+
+type Response struct {
+	Nome string `json:"name"`
+	Pokemons []Pokemon `json:"pokemon_entries"`
+
+}
+
+type Pokemon struct {
+	Number int `json:"entry_number"`
+	Especie PokemonSpecies `json:"pokemon_species"`
+
+}
+
+type PokemonSpecies struct {
+	Nome string `json:"name"`
+}
+```
+
+## 08 Testes 
+
+
+Escreve o pacote com as funcoes e depois o arquivos de teste 
+Ex.:
+
+***pacote***
+```go
+package soma
+
+
+
+func Soma(a int, b int) int {
+	return a + b
+}
+
+func Fat(a int) int {
+	if a == 0 {
+		return 1
+	}
+	return a * Fat(a -1)
+}
+
+func SomaNums(i ...int) int {
+
+	var val int 
+
+	for _, v := range i {
+		val += v
+	}
+
+	return val
+}
+```
+
+
+***testes***
+Nomeclatura do arquivo: `***_test.go`
+Nomeclatura dos métodos: `func Test***(t *testing.T)`
+
+```go
+
+package soma
+
+import (
+	"testing"
+)
+
+func TestShouldSum(t *testing.T){
+	
+	val := Soma(1,2)
+
+	if val != 3 {
+		t.Error("expecting:", 3, " got: ", val)
+	}
+}
+
+func TestSomaN(t *testing.T) {
+	val := SomaNums(2,3,4)
+
+	if val != 9 {
+		t.Error("expecting:", 9, " got: ", val)
+	}
+}
+```

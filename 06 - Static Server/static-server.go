@@ -4,7 +4,7 @@ import "net/http"
 
 
 
-func main() {
+func main3() {
 
 	fs := http.FileServer(http.Dir("./static"))
 

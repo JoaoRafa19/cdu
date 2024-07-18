@@ -281,7 +281,7 @@ func main() {
 
 ## 06 Static server
 
-## 07 
+## 07 Manipulando JSON
 
 ```go
 package main

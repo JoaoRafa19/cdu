@@ -1,6 +1,6 @@
 ## Tópicos em Go
 
-## Estruturas, métodos e interfaces
+## 01, 02 Estruturas, métodos e interfaces
 
 Exemplo de estrutura e método
 
@@ -42,7 +42,7 @@ func main() {
 }
 ```
 
-## Funções 
+## 03 Funções 
 ```go
 import "fmt"
 
@@ -140,7 +140,7 @@ func somaNumero (endNum *int, val int) {
 	(*endNum) += val
 }
 ```
-## Pacotes
+## 04 Pacotes
 Reutilizar e não reescrever código
 Exemplos de pacotes:
 - String
@@ -180,5 +180,157 @@ func main() {
 	}
 	f.Write([]byte("Ola mundo da alsçdkjfaçlsdjf"))
 
+}
+```
+
+
+## 05 Concorrencia 
+
+### Canais e for
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func ping(c chan string) {
+	for i := 0; ; i++ {
+		time.Sleep(time.Second * 1)
+		c <- "ping"
+	}
+}
+
+func pong(c chan string) {
+	for {
+		time.Sleep(time.Millisecond * 400)
+		c <- "pong"
+	}
+}
+
+
+
+func main1() {
+
+	c := make(chan string)
+
+	go ping(c)
+	go pong(c)
+
+	go func () {
+		for{
+			msg := <- c
+			fmt.Println(msg)
+		}
+	}()
+
+
+	
+	var teste string
+	fmt.Scanf("%s" , &teste)
+
+}
+```
+
+### Select e channels
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+
+	c1 := make(chan string)
+	c2 := make(chan string)
+
+	go func() {
+		for {
+			c1 <- "C1"
+			time.Sleep(time.Second * 1)
+		}
+	}()
+
+	go func() {
+		for {
+
+			c2 <- "C2"
+			time.Sleep(time.Millisecond * 500)
+		}
+	}()
+
+	for {
+		select {
+
+		case msg1 := <-c1:
+			fmt.Println(msg1)
+
+		case msg2 := <-c2:
+			fmt.Println(msg2)
+		}
+	}
+}
+```
+
+
+
+## 06 Static server
+
+## 07 
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"os"
+)
+type users struct {
+	Usuarios []User `json:"users"`
+}
+
+type Network struct {
+	Name string `json:"name"`
+	Url  string `json:"url"`
+}
+
+type User struct {
+	Name     string    `json:"name"`
+	Tel      string    `json:"tel"`
+	Networks []Network `json:"networks"`
+}
+
+func main() {
+	jsonFile, err := os.OpenFile("./file.json", os.O_RDONLY, os.ModeAppend)
+
+	if err != nil {
+		panic(err)
+	}
+	defer jsonFile.Close()
+	
+	byteValue, _ := io.ReadAll(jsonFile)
+
+	var usuarios users
+
+	if err := json.Unmarshal(byteValue, &usuarios); err != nil {
+		panic(err)
+	}
+
+	for _, user := range usuarios.Usuarios{
+		fmt.Printf("\n\nNome: %s\n", user.Name)
+		fmt.Printf("Telefone: %s\n", user.Tel)
+		fmt.Printf("Networks: ")
+		for _, network := range user.Networks {
+			fmt.Printf("\tname: %s\n", network.Name)
+			fmt.Printf("\turl: %s\n", network.Url)
+		}
+	}
 }
 ```

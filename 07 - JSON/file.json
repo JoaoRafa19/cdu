@@ -1,0 +1,32 @@
+{
+    "users": [
+        {
+            "name": "Maria Paula",
+            "tel": "3199191919",
+            "networks": [
+                {
+                    "name": "facebook",
+                    "url": "https://facebook.com"
+                },
+                {
+                    "name": "twitter",
+                    "url": "https://twitter.com"
+                }
+            ]
+        },
+        {
+            "name": " Paula Dutra",
+            "tel": "3199191919",
+            "networks": [
+                {
+                    "name": "facebook",
+                    "url": "https://facebook.com"
+                },
+                {
+                    "name": "twitter",
+                    "url": "https://twitter.com"
+                }
+            ]
+        }
+    ]
+}
